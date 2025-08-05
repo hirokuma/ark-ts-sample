@@ -1,14 +1,14 @@
 import { SingleKey, Wallet } from '@arkade-os/sdk';
 
+import { PrivateKey } from './key.js';
+
 const esploraUrl = 'http://localhost:3002';
 const arkServerUrl = 'http://localhost:7170';
 
 export function balance() {
   (async () => {
     // use your private key in hex format
-    const identity = SingleKey.fromHex(
-      '00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff',
-    );
+    const identity = SingleKey.fromHex(PrivateKey);
 
     // create a wallet instance
     const wallet = await Wallet.create({
@@ -32,6 +32,8 @@ export function balance() {
       console.log(`  Amount: ${vtxo.value} sats`);
       console.log(`  Batch ID: ${vtxo.virtualStatus.batchTxID}`);
       console.log(`  Status: ${vtxo.virtualStatus.state}`); // "preconfirmed" | "settled" | "swept" | "spent";
+      console.log('  JSON VTXO----------------');
+      console.log(`${JSON.stringify(vtxo)}`);
     });
 
     console.log('----------------------------------------------');
@@ -49,6 +51,8 @@ export function balance() {
       console.log(
         `  Status: ${utxo.status.confirmed ? 'Confirmed' : 'Unconfirmed'}`,
       );
+      console.log('  JSON UTXO----------------');
+      console.log(`${JSON.stringify(utxo)}`);
     });
   })().catch((error) => {
     console.error('Error:', error instanceof Error ? error.message : error);
