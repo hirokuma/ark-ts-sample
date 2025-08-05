@@ -1,6 +1,7 @@
 {
   "main": "dist/index.js",
   "private": true,
+  "type": "module",
   "devDependencies": {
     "@types/node": "^24.2.0",
     "@typescript-eslint/parser": "^8.38.0",
@@ -18,5 +19,8 @@
     "dev": "tsc -W",
     "check-updates": "npx -p npm-check-updates -c ncu -u",
     "lint": "npx eslint ./src"
+  },
+  "dependencies": {
+    "@arkade-os/sdk": "^0.2.1"
   }
 }

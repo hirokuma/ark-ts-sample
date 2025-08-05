@@ -22,7 +22,7 @@ export function address() {
     const boardingAddress = await wallet.getBoardingAddress();
     console.log('Boarding Address:', boardingAddress);
 
-    wallet.notifyIncomingFunds(async (incomingFunds) => {
+    await wallet.notifyIncomingFunds(async (incomingFunds: Wallet.IncomingFunds) => {
       console.log('Incoming Funds:', incomingFunds);
       // Handle incoming funds here
         switch (incomingFunds.type) {
@@ -39,7 +39,7 @@ export function address() {
             break;
         }
     });
-  })();
+  })().catch((error) => {
+    console.error('Error:', error instanceof Error ? error.message : error);
+  });
 }
-
-address();

@@ -1,3 +1,3 @@
-import * as address from './address';
+import * as address from './address.js';
 
 address.address();

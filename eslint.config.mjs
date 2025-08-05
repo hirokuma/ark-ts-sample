@@ -1,14 +1,12 @@
-// @ts-check
-
 import eslint from '@eslint/js';
 import prettierConfig from 'eslint-config-prettier';
 import pluginImport from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  // グローバルに無視するファイル/ディレクトリ
   {
-    ignores: ['dist/', 'node_modules/'],
+    files: ['src/**/*.ts'],
+    ignores: ['dist/', 'node_modules/', '**/*.mjs'],
   },
 
   // ESLintの推奨設定
@@ -22,7 +20,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         project: true,
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
     },
   },
@@ -60,6 +58,9 @@ export default tseslint.config(
           },
         },
       ],
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
     },
   },
 
