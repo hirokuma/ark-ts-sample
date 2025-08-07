@@ -4,3 +4,9 @@ You can use the following utility scripts to make commands easier
 - `npm run dev` to run the Typescript transpiler in watch mode
 - `npm run lint` to run ESLint
 - `npm start` to run your code
+
+
+## Memo
+
+* Use [mempool/electrs](https://github.com/mempool/electrs)
+  * for `/txs/package` API
