@@ -17,30 +17,11 @@ export function address() {
       esploraUrl,
     });
 
-    // You can receive bitcoin offchain instantly! No inbound liquidity!
     const offchainAddress = await wallet.getAddress();
     console.log('Ark Address:', offchainAddress);
 
     const boardingAddress = await wallet.getBoardingAddress();
     console.log('Boarding Address:', boardingAddress);
-
-    await wallet.notifyIncomingFunds((incomingFunds: Wallet.IncomingFunds) => {
-      console.log('Incoming Funds:', incomingFunds);
-      // Handle incoming funds here
-        switch (incomingFunds.type) {
-          case 'vtxo':
-            for (const vtxo of incomingFunds.vtxos) {
-              console.log(`Received payment of ${vtxo.value} sats`);
-              console.log(JSON.stringify(vtxo, null, 2));            }
-            break;
-          case 'utxo':
-            for (const utxo of incomingFunds.coins) {
-              console.log(`Received UTXO of ${utxo.value} sats`);
-              console.log(JSON.stringify(utxo, null, 2));
-            }
-            break;
-        }
-    });
   })().catch((error) => {
     console.error('Error:', error instanceof Error ? error.message : error);
   });
