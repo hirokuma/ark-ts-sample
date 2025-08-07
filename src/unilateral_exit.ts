@@ -5,7 +5,8 @@ import { PrivateKey } from './key.js';
 const esploraUrl = 'http://localhost:3002';
 const arkServerUrl = 'http://localhost:7170';
 
-export function unilateralExit() {
+// unroll a specific VTXO
+export function unilateralExit(txid: string, vout: number) {
   (async () => {
     // use your private key in hex format
     const identity = SingleKey.fromHex(PrivateKey);
@@ -17,21 +18,10 @@ export function unilateralExit() {
       esploraUrl,
     });
 
-    const onchainWallet = new OnchainWallet(wallet.identity, 'regtest');
+    const onchainWallet = new OnchainWallet(wallet.identity, 'regtest', wallet.onchainProvider);
     console.log('Address:', onchainWallet.address);
 
-    // unroll a specific VTXO
-
-    // VTXO #0:
-    //   ID: 6843fd9ec8281735827c4c39b2f506aea693291039a092239423e13732f9cd0f:0
-    //   Amount: 149885000 sats
-    //   Batch ID: undefined
-    //   Status: settled
-    const outpoint = {
-      txid: '6843fd9ec8281735827c4c39b2f506aea693291039a092239423e13732f9cd0f',
-      vout: 0,
-    };
-
+    const outpoint = { txid, vout };
     const session = await Unroll.Session.create(
       outpoint,
       onchainWallet, // the onchain wallet paying for miner fees
@@ -59,7 +49,17 @@ export function unilateralExit() {
     }
   })().catch((error) => {
     console.error('Error:', error instanceof Error ? error.message : error);
+    console.error('stack:', error.stack);
   });
 }
 
-unilateralExit();
+if (process.argv.length < 3) {
+  console.log('Usage: node dist/unilateral_exit.js <txid>:<index>');
+  process.exit(1);
+}
+const outpoint = process.argv[2].split(':');
+if (outpoint.length !== 2) {
+  console.log('Invalid outpoint format');
+  process.exit(1);
+}
+unilateralExit(outpoint[0], parseInt(outpoint[1], 10));
